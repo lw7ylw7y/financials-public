@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Small &amp; Mid-Cap Screener</title>
+  <link rel="stylesheet" href="../../src/web/static/dashboard.css">
+</head>
+<body><div style="background:#fef3c7;color:#78350f;padding:6px 12px;font:12px sans-serif">UX mockup: rendered from the real page template with fixture data. Not live data.</div>
+  <main class="page page-screener">
+    <nav class="site-nav"><a href="/" class="">Indicator Digest</a><a href="/tickers" class="">Ticker Dashboard</a><a href="/screener" class="active">Small &amp; Mid-Cap Screener</a></nav>
+    <header class="page-header">
+      <h1>Small &amp; Mid-Cap Screener</h1>
+      <div class="header-meta"><span class="checking-indicator muted" id="checking-indicator">Checking for updates&hellip;</span></div>
+    </header>
+    <p class="page-sub">The nightly run hasn&#x27;t completed since 14 Oct. Data may be out of date.</p><p class="filters-bar"><button type="button" class="btn" id="filters-toggle" aria-expanded="false" aria-controls="filters-panel">Filters &#9656;</button> <span class="muted"><span id="shown-count">4</span> names shown &middot; 2 hidden by your filters</span></p>
+    <div id="filters-panel" class="card filters-panel" data-defaults="{&quot;market_cap_min_m&quot;: {&quot;value&quot;: 1200.0}, &quot;market_cap_max_m&quot;: {&quot;value&quot;: 22700.0}, &quot;net_margin_min&quot;: {&quot;value&quot;: 0.0, &quot;on&quot;: true}, &quot;fcf_min_m&quot;: {&quot;value&quot;: 0.0, &quot;on&quot;: true}, &quot;max_debt_equity&quot;: {&quot;value&quot;: 0.5, &quot;on&quot;: true}, &quot;max_dilution_pct&quot;: {&quot;value&quot;: 5.0, &quot;on&quot;: true}, &quot;min_roi_pct&quot;: {&quot;value&quot;: 5.0, &quot;on&quot;: true}, &quot;stale_years&quot;: {&quot;value&quot;: 10.0, &quot;on&quot;: true}, &quot;stale_min_growth_pct&quot;: {&quot;value&quot;: 10.0}}" hidden>
+      <div class="filter-row" role="group" aria-label="Market cap">Market cap (always on) &nbsp; from <input type="number" step="any" class="filter-number" data-field="market_cap_min_m" data-part="value" value="1200" aria-label="Market cap minimum, $M" aria-describedby="err-market_cap_min_m"><span class="field-error" id="err-market_cap_min_m" role="alert"></span> to <input type="number" step="any" class="filter-number" data-field="market_cap_max_m" data-part="value" value="22700" aria-label="Market cap maximum, $M" aria-describedby="err-market_cap_max_m"><span class="field-error" id="err-market_cap_max_m" role="alert"></span> $M</div><div class="filter-row" role="group" aria-label="Net margin"><label><input type="checkbox" data-field="net_margin_min" data-part="on" checked> Net margin</label> &nbsp; above <input type="number" step="any" class="filter-number" data-field="net_margin_min" data-part="value" value="0" aria-label="Net margin, above" aria-describedby="err-net_margin_min"><span class="field-error" id="err-net_margin_min" role="alert"></span> %</div><div class="filter-row" role="group" aria-label="Free cash flow"><label><input type="checkbox" data-field="fcf_min_m" data-part="on" checked> Free cash flow</label> &nbsp; above <input type="number" step="any" class="filter-number" data-field="fcf_min_m" data-part="value" value="0" aria-label="Free cash flow, above" aria-describedby="err-fcf_min_m"><span class="field-error" id="err-fcf_min_m" role="alert"></span> $M (latest fiscal year)</div><div class="filter-row" role="group" aria-label="Debt / equity"><label><input type="checkbox" data-field="max_debt_equity" data-part="on" checked> Debt / equity</label> &nbsp; at most <input type="number" step="any" class="filter-number" data-field="max_debt_equity" data-part="value" value="0.5" aria-label="Debt / equity, at most" aria-describedby="err-max_debt_equity"><span class="field-error" id="err-max_debt_equity" role="alert"></span> </div><div class="filter-row" role="group" aria-label="Annual dilution"><label><input type="checkbox" data-field="max_dilution_pct" data-part="on" checked> Annual dilution</label> &nbsp; at most <input type="number" step="any" class="filter-number" data-field="max_dilution_pct" data-part="value" value="5" aria-label="Annual dilution, at most" aria-describedby="err-max_dilution_pct"><span class="field-error" id="err-max_dilution_pct" role="alert"></span> %</div><div class="filter-row" role="group" aria-label="Return on investment (ROI)"><label><input type="checkbox" data-field="min_roi_pct" data-part="on" checked> Return on investment (ROI)</label> &nbsp; at least <input type="number" step="any" class="filter-number" data-field="min_roi_pct" data-part="value" value="5" aria-label="Return on investment (ROI), at least" aria-describedby="err-min_roi_pct"><span class="field-error" id="err-min_roi_pct" role="alert"></span> %</div><div class="filter-row" role="group" aria-label="Not stale"><label><input type="checkbox" data-field="stale_years" data-part="on" checked> Not stale</label> &nbsp; exclude listed at least <input type="number" step="any" class="filter-number" data-field="stale_years" data-part="value" value="10" aria-label="Years listed" aria-describedby="err-stale_years"><span class="field-error" id="err-stale_years" role="alert"></span> years with revenue growth below <input type="number" step="any" class="filter-number" data-field="stale_min_growth_pct" data-part="value" value="10" aria-label="Revenue growth, percent" aria-describedby="err-stale_min_growth_pct"><span class="field-error" id="err-stale_min_growth_pct" role="alert"></span> %</div>
+      <p id="filters-preview" class="note-state" role="status" aria-live="polite"></p>
+      <div class="filter-actions"><button type="button" class="btn primary" id="filters-apply" disabled>Apply</button>
+        <button type="button" class="btn" id="filters-reset">Reset to defaults</button>
+        <span class="muted">Shortlisted and dismissed names are not affected.</span></div>
+    </div><nav class="screener-tabs" aria-label="Candidate lists"><a href="/screener?tab=new" data-tab="new" aria-current="page">New (<span class="tab-count">4</span>)<span class="tab-due"></span></a><a href="/screener?tab=shortlisted" data-tab="shortlisted">Shortlisted (<span class="tab-count">0</span>)<span class="tab-due"></span></a><a href="/screener?tab=dismissed" data-tab="dismissed">Dismissed (<span class="tab-count">0</span>)<span class="tab-due"></span></a></nav><p id="prices-note" class="muted" role="status"></p>
+    <div class="category-block">
+      <table class="indicator-table ticker-table screener-table" data-tab="new">
+        <thead><tr><th class="sortable" data-sort-key="symbol" aria-sort="none"><button type="button" class="sort-button">Ticker</button></th><th class="num sortable" data-sort-key="score" aria-sort="none"><button type="button" class="sort-button">Score</button></th><th class="num">Price</th><th class="num sortable" data-sort-key="change" aria-sort="none"><button type="button" class="sort-button">Change</button></th><th>52-Week Range</th><th class="num sortable" data-sort-key="pctInRange" aria-sort="none"><button type="button" class="sort-button">% in Range</button></th><th class="num sortable" data-sort-key="marketCap" aria-sort="none"><button type="button" class="sort-button">Market Cap</button></th><th class="num sortable" data-sort-key="pe" aria-sort="none"><button type="button" class="sort-button">P/E</button></th><th class="num sortable" data-sort-key="peg" aria-sort="none"><button type="button" class="sort-button">PEG</button></th><th class="num sortable" data-sort-key="nextEarnings" aria-sort="none" title="Projected until the company announces"><button type="button" class="sort-button">Next Earnings</button></th><th></th></tr></thead>
+        <tbody>
+              <tr class="screener-row" data-symbol-row="KRDL" data-symbol="KRDL" data-score="80.0" data-pctinrange="42.95081967213115" data-change="" data-marketcap="12800" data-pe="31.0" data-peg="1.6" data-nextearnings="" data-quote-row="1">
+                <td class="ticker-cell"><button class="disclose" type="button" aria-expanded="false" aria-controls="detail-KRDL"><span aria-hidden="true">&#9656;</span><span class="sr-only">KRDL details</span></button>KRDL
+                  <span class="co company-name" title="Kardel Software">Kardel Software</span><span class="co note-flag" hidden>&#9998; Has a note</span></td>
+                <td class="num">80</td>
+                <td class="num">$44.10</td><td class="num">-0.20 <span class="ma-delta down" style="color:#b91c1c;">&#9660;0.45%</span></td><td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $31.00 to $61.50, current price $44.10">
+                <defs>
+                  <linearGradient id="range-grad-KRDL" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-KRDL)"/>
+                <circle cx="38.7" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$31.00</span><span>$61.50</span>
+              </div>
+            </div></td><td class="num">43%</td>
+                <td class="num">$12.80B</td>
+                <td class="num">31.0</td>
+                <td class="num">1.60</td>
+                <td class="num muted">&mdash;</td>
+                <td class="actions-cell"><button type="button" class="btn primary" data-action="shortlisted" aria-label="Shortlist KRDL">Shortlist</button><button type="button" class="btn" data-action="dismissed" aria-label="Dismiss KRDL">Dismiss</button></td>
+              </tr>
+              <tr class="detail-row" id="detail-KRDL" hidden>
+                <td colspan="11">
+                  <div class="detail-grid">
+                    <div><h4>Key figures</h4><ul><li>ROI <strong>18%</strong></li><li>Debt/equity <strong>0.0</strong></li><li>FCF <strong>$64M</strong></li><li>Dilution <strong>+0.5%/yr</strong></li><li>Revenue growth <strong>+15%</strong></li></ul></div>
+                    <div><h4>Free cash flow</h4><svg class="bars" width="198" height="104" viewBox="0 0 198 104" role="img" aria-label="FY23 $38M, FY24 $35M, FY25 $64M"><rect x="0" y="28.0" width="56" height="42.0" fill="currentColor" opacity="0.35"/><text x="28.0" y="25.0" text-anchor="middle" font-size="11" fill="currentColor">$38M</text><text x="28.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY23</text><rect x="66" y="31.5" width="56" height="38.5" fill="currentColor" opacity="0.35"/><text x="94.0" y="28.5" text-anchor="middle" font-size="11" fill="currentColor">$35M</text><text x="94.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY24</text><rect x="132" y="0.0" width="56" height="70.0" fill="currentColor" opacity="0.35"/><text x="160.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">$64M</text><text x="160.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY25</text></svg></div>
+                    <div><h4>Shares (weighted)</h4><svg class="bars" width="198" height="104" viewBox="0 0 198 104" role="img" aria-label="FY23 41.2M, FY24 41.6M, FY25 41.8M"><rect x="0" y="1.0" width="56" height="69.0" fill="currentColor" opacity="0.35"/><text x="28.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.2M</text><text x="28.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY23</text><rect x="66" y="0.3" width="56" height="69.7" fill="currentColor" opacity="0.35"/><text x="94.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.6M</text><text x="94.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY24</text><rect x="132" y="0.0" width="56" height="70.0" fill="currentColor" opacity="0.35"/><text x="160.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.8M</text><text x="160.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY25</text></svg></div>
+                    <div>
+                      <h4>Filters</h4><ul><li>&#10003; Market cap</li><li>&#10003; Net margin</li><li>&#10003; Free cash flow</li><li>&#10003; Debt/equity</li><li>&#10003; Dilution</li><li>&#10003; ROI</li><li>&#10003; Not stale</li></ul>
+                      <p class="muted">Figures refreshed 19 Oct 2026 &middot; Listed 2015-01-01</p>
+                      <p><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=1234&amp;type=10-K" target="_blank" rel="noopener noreferrer">10-K filings <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a> &middot; <a href="https://finance.yahoo.com/quote/KRDL" target="_blank" rel="noopener noreferrer">Quote <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+                    </div>
+                  </div>
+                  <div class="note-block">
+                    <label for="note-KRDL">Note</label>
+                    <textarea id="note-KRDL" class="note-field" data-symbol="KRDL"
+                      placeholder="Notes for your research (not shared)"></textarea>
+                    <p><button class="btn" type="button" data-action="save-note" disabled>Save note</button>
+                      <span class="note-state" role="status"></span></p>
+                  </div>
+                </td>
+              </tr>
+              <tr class="screener-row" data-symbol-row="NVLT" data-symbol="NVLT" data-score="73.3" data-pctinrange="53.33333333333332" data-change="" data-marketcap="4210" data-pe="22.4" data-peg="1.1" data-nextearnings="" data-quote-row="1">
+                <td class="ticker-cell"><button class="disclose" type="button" aria-expanded="false" aria-controls="detail-NVLT"><span aria-hidden="true">&#9656;</span><span class="sr-only">NVLT details</span></button>NVLT
+                  <span class="co company-name" title="Novalant Systems">Novalant Systems</span><span class="co note-flag" hidden>&#9998; Has a note</span></td>
+                <td class="num">73</td>
+                <td class="num">$18.40</td><td class="num">+0.41 <span class="ma-delta up" style="color:#15803d;">&#9650;2.28%</span></td><td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $12.00 to $24.00, current price $18.40">
+                <defs>
+                  <linearGradient id="range-grad-NVLT" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-NVLT)"/>
+                <circle cx="48.0" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$12.00</span><span>$24.00</span>
+              </div>
+            </div></td><td class="num">53%</td>
+                <td class="num">$4.21B</td>
+                <td class="num">22.4</td>
+                <td class="num">1.10</td>
+                <td class="num muted">&mdash;</td>
+                <td class="actions-cell"><button type="button" class="btn primary" data-action="shortlisted" aria-label="Shortlist NVLT">Shortlist</button><button type="button" class="btn" data-action="dismissed" aria-label="Dismiss NVLT">Dismiss</button></td>
+              </tr>
+              <tr class="detail-row" id="detail-NVLT" hidden>
+                <td colspan="11">
+                  <div class="detail-grid">
+                    <div><h4>Key figures</h4><ul><li>ROI <strong>21%</strong></li><li>Debt/equity <strong>0.1</strong></li><li>FCF <strong>$38M</strong></li><li>Dilution <strong>+0.8%/yr</strong></li><li>Revenue growth <strong>+18%</strong></li></ul></div>
+                    <div><h4>Free cash flow</h4><svg class="bars" width="198" height="104" viewBox="0 0 198 104" role="img" aria-label="FY23 $23M, FY24 $21M, FY25 $38M"><rect x="0" y="28.0" width="56" height="42.0" fill="currentColor" opacity="0.35"/><text x="28.0" y="25.0" text-anchor="middle" font-size="11" fill="currentColor">$23M</text><text x="28.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY23</text><rect x="66" y="31.5" width="56" height="38.5" fill="currentColor" opacity="0.35"/><text x="94.0" y="28.5" text-anchor="middle" font-size="11" fill="currentColor">$21M</text><text x="94.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY24</text><rect x="132" y="0.0" width="56" height="70.0" fill="currentColor" opacity="0.35"/><text x="160.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">$38M</text><text x="160.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY25</text></svg></div>
+                    <div><h4>Shares (weighted)</h4><svg class="bars" width="198" height="104" viewBox="0 0 198 104" role="img" aria-label="FY23 41.2M, FY24 41.6M, FY25 41.8M"><rect x="0" y="1.0" width="56" height="69.0" fill="currentColor" opacity="0.35"/><text x="28.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.2M</text><text x="28.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY23</text><rect x="66" y="0.3" width="56" height="69.7" fill="currentColor" opacity="0.35"/><text x="94.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.6M</text><text x="94.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY24</text><rect x="132" y="0.0" width="56" height="70.0" fill="currentColor" opacity="0.35"/><text x="160.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.8M</text><text x="160.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY25</text></svg></div>
+                    <div>
+                      <h4>Filters</h4><ul><li>&#10003; Market cap</li><li>&#10003; Net margin</li><li>&#10003; Free cash flow</li><li>&#10003; Debt/equity</li><li>&#10003; Dilution</li><li>&#10003; ROI</li><li>&#10003; Not stale</li></ul>
+                      <p class="muted">Figures refreshed 19 Oct 2026 &middot; Listed 2015-01-01</p>
+                      <p><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=1234&amp;type=10-K" target="_blank" rel="noopener noreferrer">10-K filings <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a> &middot; <a href="https://finance.yahoo.com/quote/NVLT" target="_blank" rel="noopener noreferrer">Quote <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+                    </div>
+                  </div>
+                  <div class="note-block">
+                    <label for="note-NVLT">Note</label>
+                    <textarea id="note-NVLT" class="note-field" data-symbol="NVLT"
+                      placeholder="Notes for your research (not shared)"></textarea>
+                    <p><button class="btn" type="button" data-action="save-note" disabled>Save note</button>
+                      <span class="note-state" role="status"></span></p>
+                  </div>
+                </td>
+              </tr>
+              <tr class="screener-row" data-symbol-row="ORBT" data-symbol="ORBT" data-score="33.3" data-pctinrange="48.82352941176471" data-change="" data-marketcap="6900" data-pe="26.7" data-peg="1.9" data-nextearnings="" data-quote-row="1">
+                <td class="ticker-cell"><button class="disclose" type="button" aria-expanded="false" aria-controls="detail-ORBT"><span aria-hidden="true">&#9656;</span><span class="sr-only">ORBT details</span></button>ORBT
+                  <span class="co company-name" title="Orbitrade">Orbitrade</span><span class="co note-flag" hidden>&#9998; Has a note</span></td>
+                <td class="num">33</td>
+                <td class="num">$27.30</td><td class="num">+0.35 <span class="ma-delta up" style="color:#15803d;">&#9650;1.30%</span></td><td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $19.00 to $36.00, current price $27.30">
+                <defs>
+                  <linearGradient id="range-grad-ORBT" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-ORBT)"/>
+                <circle cx="43.9" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$19.00</span><span>$36.00</span>
+              </div>
+            </div></td><td class="num">49%</td>
+                <td class="num">$6.90B</td>
+                <td class="num">26.7</td>
+                <td class="num">1.90</td>
+                <td class="num muted">&mdash;</td>
+                <td class="actions-cell"><button type="button" class="btn primary" data-action="shortlisted" aria-label="Shortlist ORBT">Shortlist</button><button type="button" class="btn" data-action="dismissed" aria-label="Dismiss ORBT">Dismiss</button></td>
+              </tr>
+              <tr class="detail-row" id="detail-ORBT" hidden>
+                <td colspan="11">
+                  <div class="detail-grid">
+                    <div><h4>Key figures</h4><ul><li>ROI <strong>17%</strong></li><li>Debt/equity <strong>0.3</strong></li><li>FCF <strong>$22M</strong></li><li>Dilution <strong>+2.0%/yr</strong></li><li>Revenue growth <strong>+24%</strong></li></ul></div>
+                    <div><h4>Free cash flow</h4><svg class="bars" width="198" height="104" viewBox="0 0 198 104" role="img" aria-label="FY23 $14M, FY24 $12M, FY25 $22M"><rect x="0" y="28.0" width="56" height="42.0" fill="currentColor" opacity="0.35"/><text x="28.0" y="25.0" text-anchor="middle" font-size="11" fill="currentColor">$14M</text><text x="28.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY23</text><rect x="66" y="31.5" width="56" height="38.5" fill="currentColor" opacity="0.35"/><text x="94.0" y="28.5" text-anchor="middle" font-size="11" fill="currentColor">$12M</text><text x="94.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY24</text><rect x="132" y="0.0" width="56" height="70.0" fill="currentColor" opacity="0.35"/><text x="160.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">$22M</text><text x="160.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY25</text></svg></div>
+                    <div><h4>Shares (weighted)</h4><svg class="bars" width="198" height="104" viewBox="0 0 198 104" role="img" aria-label="FY23 41.2M, FY24 41.6M, FY25 41.8M"><rect x="0" y="1.0" width="56" height="69.0" fill="currentColor" opacity="0.35"/><text x="28.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.2M</text><text x="28.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY23</text><rect x="66" y="0.3" width="56" height="69.7" fill="currentColor" opacity="0.35"/><text x="94.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.6M</text><text x="94.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY24</text><rect x="132" y="0.0" width="56" height="70.0" fill="currentColor" opacity="0.35"/><text x="160.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.8M</text><text x="160.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY25</text></svg></div>
+                    <div>
+                      <h4>Filters</h4><ul><li>&#10003; Market cap</li><li>&#10003; Net margin</li><li>&#10003; Free cash flow</li><li>&#10003; Debt/equity</li><li>&#10003; Dilution</li><li>&#10003; ROI</li><li>&#10003; Not stale</li></ul>
+                      <p class="muted">Figures refreshed 19 Oct 2026 &middot; Listed 2015-01-01</p>
+                      <p><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=1234&amp;type=10-K" target="_blank" rel="noopener noreferrer">10-K filings <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a> &middot; <a href="https://finance.yahoo.com/quote/ORBT" target="_blank" rel="noopener noreferrer">Quote <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+                    </div>
+                  </div>
+                  <div class="note-block">
+                    <label for="note-ORBT">Note</label>
+                    <textarea id="note-ORBT" class="note-field" data-symbol="ORBT"
+                      placeholder="Notes for your research (not shared)"></textarea>
+                    <p><button class="btn" type="button" data-action="save-note" disabled>Save note</button>
+                      <span class="note-state" role="status"></span></p>
+                  </div>
+                </td>
+              </tr>
+              <tr class="screener-row" data-symbol-row="PLXR" data-symbol="PLXR" data-score="13.3" data-pctinrange="55.55555555555555" data-change="" data-marketcap="1650" data-pe="" data-peg="" data-nextearnings="" data-quote-row="1">
+                <td class="ticker-cell"><button class="disclose" type="button" aria-expanded="false" aria-controls="detail-PLXR"><span aria-hidden="true">&#9656;</span><span class="sr-only">PLXR details</span></button>PLXR
+                  <span class="co company-name" title="Plexar Data">Plexar Data</span><span class="co note-flag" hidden>&#9998; Has a note</span></td>
+                <td class="num">13</td>
+                <td class="num">$9.60</td><td class="num">+0.10 <span class="ma-delta up" style="color:#15803d;">&#9650;1.05%</span></td><td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $6.10 to $12.40, current price $9.60">
+                <defs>
+                  <linearGradient id="range-grad-PLXR" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-PLXR)"/>
+                <circle cx="50.0" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$6.10</span><span>$12.40</span>
+              </div>
+            </div></td><td class="num">56%</td>
+                <td class="num">$1.65B</td>
+                <td class="num muted">n/a</td>
+                <td class="num muted">n/a</td>
+                <td class="num muted">&mdash;</td>
+                <td class="actions-cell"><button type="button" class="btn primary" data-action="shortlisted" aria-label="Shortlist PLXR">Shortlist</button><button type="button" class="btn" data-action="dismissed" aria-label="Dismiss PLXR">Dismiss</button></td>
+              </tr>
+              <tr class="detail-row" id="detail-PLXR" hidden>
+                <td colspan="11">
+                  <div class="detail-grid">
+                    <div><h4>Key figures</h4><ul><li>ROI <strong>15%</strong></li><li>Debt/equity <strong>0.2</strong></li><li>FCF <strong>$6M</strong></li><li>Dilution <strong>+1.2%/yr</strong></li><li>Revenue growth <strong>+11%</strong></li></ul></div>
+                    <div><h4>Free cash flow</h4><svg class="bars" width="198" height="104" viewBox="0 0 198 104" role="img" aria-label="FY23 $4M, FY24 $4M, FY25 $6M"><rect x="0" y="28.0" width="56" height="42.0" fill="currentColor" opacity="0.35"/><text x="28.0" y="25.0" text-anchor="middle" font-size="11" fill="currentColor">$4M</text><text x="28.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY23</text><rect x="66" y="31.5" width="56" height="38.5" fill="currentColor" opacity="0.35"/><text x="94.0" y="28.5" text-anchor="middle" font-size="11" fill="currentColor">$4M</text><text x="94.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY24</text><rect x="132" y="0.0" width="56" height="70.0" fill="currentColor" opacity="0.35"/><text x="160.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">$6M</text><text x="160.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY25</text></svg></div>
+                    <div><h4>Shares (weighted)</h4><svg class="bars" width="198" height="104" viewBox="0 0 198 104" role="img" aria-label="FY23 41.2M, FY24 41.6M, FY25 41.8M"><rect x="0" y="1.0" width="56" height="69.0" fill="currentColor" opacity="0.35"/><text x="28.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.2M</text><text x="28.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY23</text><rect x="66" y="0.3" width="56" height="69.7" fill="currentColor" opacity="0.35"/><text x="94.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.6M</text><text x="94.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY24</text><rect x="132" y="0.0" width="56" height="70.0" fill="currentColor" opacity="0.35"/><text x="160.0" y="10.0" text-anchor="middle" font-size="11" fill="currentColor">41.8M</text><text x="160.0" y="98" text-anchor="middle" font-size="10" fill="currentColor">FY25</text></svg></div>
+                    <div>
+                      <h4>Filters</h4><ul><li>&#10003; Market cap</li><li>&#10003; Net margin</li><li>&#10003; Free cash flow</li><li>&#10003; Debt/equity</li><li>&#10003; Dilution</li><li>&#10003; ROI</li><li>&#10003; Not stale</li></ul>
+                      <p class="muted">Figures refreshed 19 Oct 2026 &middot; Listed 2015-01-01</p>
+                      <p><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=1234&amp;type=10-K" target="_blank" rel="noopener noreferrer">10-K filings <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a> &middot; <a href="https://finance.yahoo.com/quote/PLXR" target="_blank" rel="noopener noreferrer">Quote <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+                    </div>
+                  </div>
+                  <div class="note-block">
+                    <label for="note-PLXR">Note</label>
+                    <textarea id="note-PLXR" class="note-field" data-symbol="PLXR"
+                      placeholder="Notes for your research (not shared)"></textarea>
+                    <p><button class="btn" type="button" data-action="save-note" disabled>Save note</button>
+                      <span class="note-state" role="status"></span></p>
+                  </div>
+                </td>
+              </tr>
+        </tbody>
+      </table>
+    </div><details class="data-check"><summary>Needs a data check (1)</summary><table class="indicator-table"><tbody><tr><td>GRDN<span class="co">Gardena Micro</span></td><td>Capex not reported · Fewer than two years of share data</td></tr></tbody></table></details><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><p id="announce" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ticker Dashboard</title>
+  <link rel="stylesheet" href="../../src/web/static/dashboard.css">
+</head>
+<body><div style="background:#fef3c7;color:#78350f;padding:6px 12px;font:12px sans-serif">UX mockup: rendered from the real page template with fixture data. Not live data.</div>
+  <main class="page page-wide">
+    <nav class="site-nav"><a href="/" class="">Indicator Digest</a><a href="/tickers" class="active">Ticker Dashboard</a><a href="/screener" class="">Small &amp; Mid-Cap Screener</a></nav>
+    <header class="page-header">
+      <h1>Ticker Dashboard</h1>
+      <div class="header-meta">
+        <span class="checking-indicator muted" id="checking-indicator">Checking for updates&hellip;</span>
+      </div>
+    </header>
+    <div id="market-news">
+        <section class="card">
+          <p class="muted">Market news unavailable.</p>
+        </section></div>
+    <p id="full-position-note" class="muted" role="status"></p>
+    <p id="full-position-error" class="muted" role="status"></p>
+    <p id="invested-note" class="muted" role="status"></p>
+    <p id="invested-error" class="muted" role="status"></p>
+    <div id="ticker-groups"></div>
+    <footer class="page-footer">
+      <p class="muted">Price, change, and 52-week range from Finnhub &middot; free tier may lag by up to ~20 minutes</p>
+      <p class="muted">Verdicts compare each ticker with its own 52-week range and its group; they are not an estimate of what a ticker is worth, and not personalized financial advice.</p>
+    </footer>
+  </main>
+</body>
+</html>

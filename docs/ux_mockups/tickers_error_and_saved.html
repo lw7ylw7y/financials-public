@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ticker Dashboard</title>
+  <link rel="stylesheet" href="../../src/web/static/dashboard.css">
+</head>
+<body><div style="background:#fef3c7;color:#78350f;padding:6px 12px;font:12px sans-serif">UX mockup: rendered from the real page template with fixture data. Not live data.</div>
+  <main class="page page-wide">
+    <nav class="site-nav"><a href="/" class="">Indicator Digest</a><a href="/tickers" class="active">Ticker Dashboard</a><a href="/screener" class="">Small &amp; Mid-Cap Screener</a></nav>
+    <header class="page-header">
+      <h1>Ticker Dashboard</h1>
+      <div class="header-meta">
+        <span class="checking-indicator muted" id="checking-indicator">Checking for updates&hellip;</span>
+      </div>
+    </header>
+    <div id="market-news">
+        <section class="card">
+          <p class="category-label">Market News</p>
+          <ul class="market-news-list"><li><a href="https://example.com/a" target="_blank" rel="noopener">Fed officials signal patience on further rate moves</a> <span class="muted">&middot; Reuters</span></li><li><a href="https://example.com/b" target="_blank" rel="noopener">Chipmakers rally as demand outlook improves</a> <span class="muted">&middot; CNBC</span></li></ul>
+        </section></div>
+    <p id="full-position-note" class="muted" role="status"></p>
+    <p id="full-position-error" class="muted" role="status"></p>
+    <p id="invested-note" class="muted" role="status"></p>
+    <p id="invested-error" class="muted" role="status"></p>
+    <div id="ticker-groups">
+        <div class="category-block" data-group="stocks">
+          <p class="category-label">Stocks <span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-stocks-"><span class="verdict-pill" style="background:#fee2e2;color:#b91c1c;">Overpriced</span><span class="verdict-tip" id="verdict-tip-stocks-" role="tooltip">Most of this group is trading near the high end of its own 52-week ranges, richer than it has been over the past year. Standing out as richer: QQQ.</span></span></p>
+          <table class="indicator-table ticker-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-sort-key="symbol">Ticker</th>
+                <th class="num">Price</th>
+                <th class="num">Change</th>
+                <th>52-Week Range</th>
+                <th class="num sortable" data-sort-key="pctInRange">% in Range</th>
+                
+                <th>Verdict</th>
+                
+                <th>Full Position</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr data-symbol="SPY" data-pct-in-range="98.35">
+                <td>SPY</td>
+                <td class="num">$762.60</td>
+                <td class="num">+3.10 <span class="ma-delta up" style="color:#15803d;">&#9650;0.41%</span></td>
+                <td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $560.00 to $766.00, current price $762.60">
+                <defs>
+                  <linearGradient id="range-grad-SPY" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-SPY)"/>
+                <circle cx="88.5" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$560.00</span><span>$766.00</span>
+              </div>
+            </div></td>
+                <td class="num">98%</td>
+                
+                <td class="verdict-cell"><span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-stocks-SPY"><span class="verdict-pill" style="background:#e2e8f0;color:#475569;">Fair</span><span class="verdict-tip" id="verdict-tip-stocks-SPY" role="tooltip">In line with its own past year and its peers. Price at 98% of its own 52-week range (0.4% below its high), near its high; 26-week return 14.0%, mid-pack (a fund has no P/E, so this is a price-position read).</span></span></td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="SPY" aria-label="Full position in SPY"></td><td><button type="button" class="remove-ticker" data-group="stocks" data-symbol="SPY" title="Remove SPY from stocks" aria-label="Remove SPY">&times;</button></td>
+              </tr>
+              <tr data-symbol="IVW" data-pct-in-range="94.00">
+                <td>IVW</td>
+                <td class="num">$118.20</td>
+                <td class="num">-0.40 <span class="ma-delta down" style="color:#b91c1c;">&#9660;0.34%</span></td>
+                <td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $90.00 to $120.00, current price $118.20">
+                <defs>
+                  <linearGradient id="range-grad-IVW" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-IVW)"/>
+                <circle cx="84.6" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$90.00</span><span>$120.00</span>
+              </div>
+            </div></td>
+                <td class="num">94%</td>
+                
+                <td class="verdict-cell"><span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-stocks-IVW"><span class="verdict-pill" style="background:#e2e8f0;color:#475569;">Fair</span><span class="verdict-tip" id="verdict-tip-stocks-IVW" role="tooltip">In line with its own past year and its peers. Price at 94% of its own 52-week range (1.5% below its high), near its high; 26-week return 11.0%, behind most of stocks (a fund has no P/E, so this is a price-position read).</span></span></td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="IVW" aria-label="Full position in IVW"></td><td><button type="button" class="remove-ticker" data-group="stocks" data-symbol="IVW" title="Remove IVW from stocks" aria-label="Remove IVW">&times;</button></td>
+              </tr>
+              <tr data-symbol="QQQ" data-pct-in-range="95.88">
+                <td>QQQ</td>
+                <td class="num">$604.50</td>
+                <td class="num">+5.20 <span class="ma-delta up" style="color:#15803d;">&#9650;0.87%</span></td>
+                <td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $430.00 to $612.00, current price $604.50">
+                <defs>
+                  <linearGradient id="range-grad-QQQ" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-QQQ)"/>
+                <circle cx="86.3" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$430.00</span><span>$612.00</span>
+              </div>
+            </div></td>
+                <td class="num">96%</td>
+                
+                <td class="verdict-cell"><span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-stocks-QQQ"><span class="verdict-pill" style="background:#fee2e2;color:#b91c1c;">Overpriced</span><span class="verdict-tip" id="verdict-tip-stocks-QQQ" role="tooltip">Richer than its own past year and than its peers. Price at 96% of its own 52-week range (1.2% below its high), near its high; 26-week return 18.0%, ahead of most of stocks (stretched) (a fund has no P/E, so this is a price-position read).</span></span></td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="QQQ" aria-label="Full position in QQQ"></td><td><button type="button" class="remove-ticker" data-group="stocks" data-symbol="QQQ" title="Remove QQQ from stocks" aria-label="Remove QQQ">&times;</button></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <form class="add-ticker-form" data-group="stocks">
+            <input type="text" name="symbol" class="add-ticker-input" placeholder="Add ticker&hellip;" maxlength="10" autocomplete="off">
+            <button type="submit">Add</button>
+          </form>
+        </div>
+        <div class="category-block" data-group="bonds">
+          <p class="category-label">Bonds <span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-bonds-"><span class="verdict-pill" style="background:#e2e8f0;color:#64748b;">Not judged</span><span class="verdict-tip" id="verdict-tip-bonds-" role="tooltip">Too few tickers with a 52-week range to compare: a group needs at least 3.</span></span></p>
+          <table class="indicator-table ticker-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-sort-key="symbol">Ticker</th>
+                <th class="num">Price</th>
+                <th class="num">Change</th>
+                <th>52-Week Range</th>
+                <th class="num sortable" data-sort-key="pctInRange">% in Range</th>
+                
+                <th>Verdict</th>
+                
+                <th>Full Position</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr data-symbol="VGIT" data-pct-in-range="35.00">
+                <td>VGIT</td>
+                <td class="num">$57.10</td>
+                <td class="num">+0.12 <span class="ma-delta up" style="color:#15803d;">&#9650;0.21%</span></td>
+                <td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $55.00 to $61.00, current price $57.10">
+                <defs>
+                  <linearGradient id="range-grad-VGIT" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-VGIT)"/>
+                <circle cx="31.5" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$55.00</span><span>$61.00</span>
+              </div>
+            </div></td>
+                <td class="num">35%</td>
+                
+                <td class="verdict-cell"><span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-bonds-VGIT"><span class="verdict-pill" style="background:#e2e8f0;color:#475569;">Fair</span><span class="verdict-tip" id="verdict-tip-bonds-VGIT" role="tooltip">In line with its own past year and its peers. Price at 35% of its own 52-week range (6.4% below its high), mid-range (a fund has no P/E, so this is a price-position read).</span></span></td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="VGIT" aria-label="Full position in VGIT"></td><td><button type="button" class="remove-ticker" data-group="bonds" data-symbol="VGIT" title="Remove VGIT from bonds" aria-label="Remove VGIT">&times;</button></td>
+              </tr>
+              <tr data-symbol="BND" data-pct-in-range="73.33">
+                <td>BND</td>
+                <td class="num">$72.40</td>
+                <td class="num">+0.05 <span class="ma-delta up" style="color:#15803d;">&#9650;0.07%</span></td>
+                <td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $68.00 to $74.00, current price $72.40">
+                <defs>
+                  <linearGradient id="range-grad-BND" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-BND)"/>
+                <circle cx="66.0" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$68.00</span><span>$74.00</span>
+              </div>
+            </div></td>
+                <td class="num">73%</td>
+                
+                <td class="verdict-cell"><span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-bonds-BND"><span class="verdict-pill" style="background:#e2e8f0;color:#475569;">Fair</span><span class="verdict-tip" id="verdict-tip-bonds-BND" role="tooltip">In line with its own past year and its peers. Price at 73% of its own 52-week range (2.2% below its high), near its high (a fund has no P/E, so this is a price-position read).</span></span></td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="BND" aria-label="Full position in BND"></td><td><button type="button" class="remove-ticker" data-group="bonds" data-symbol="BND" title="Remove BND from bonds" aria-label="Remove BND">&times;</button></td>
+              </tr>
+              <tr data-symbol="AGG" data-pct-in-range="">
+                <td>AGG</td>
+                <td colspan="4" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="AGG" aria-label="Full position in AGG"></td><td><button type="button" class="remove-ticker" data-group="bonds" data-symbol="AGG" title="Remove AGG from bonds" aria-label="Remove AGG">&times;</button></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <form class="add-ticker-form" data-group="bonds">
+            <input type="text" name="symbol" class="add-ticker-input" placeholder="Add ticker&hellip;" maxlength="10" autocomplete="off">
+            <button type="submit">Add</button>
+          </form>
+        </div>
+        <div class="category-block" data-group="individual">
+          <p class="category-label">Individual <span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-individual-"><span class="verdict-pill" style="background:#dcfce7;color:#15803d;">Discount</span><span class="verdict-tip" id="verdict-tip-individual-" role="tooltip">Most of this group is trading near the low end of its own 52-week ranges, cheaper than it has been over the past year.</span></span></p>
+          <table class="indicator-table ticker-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-sort-key="symbol">Ticker</th>
+                <th class="num">Price</th>
+                <th class="num">Change</th>
+                <th>52-Week Range</th>
+                <th class="num sortable" data-sort-key="pctInRange">% in Range</th>
+                
+                <th class="num">Market Cap</th>
+                <th class="num">P/E</th>
+                <th class="num">PEG</th>
+                <th>Verdict</th>
+                <th class="num invested-head">Invested</th>
+                <th>Full Position</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr data-symbol="NVDA" data-pct-in-range="84.63">
+                <td>NVDA</td>
+                <td class="num">$190.40</td>
+                <td class="num">+2.10 <span class="ma-delta up" style="color:#15803d;">&#9650;1.12%</span></td>
+                <td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $110.00 to $205.00, current price $190.40">
+                <defs>
+                  <linearGradient id="range-grad-NVDA" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-NVDA)"/>
+                <circle cx="76.2" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$110.00</span><span>$205.00</span>
+              </div>
+            </div></td>
+                <td class="num">85%</td>
+                
+                <td class="num">$4.60T</td>
+                <td class="num">28.5</td>
+                <td class="num">0.90</td>
+                <td class="verdict-cell"><span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-individual-NVDA"><span class="verdict-pill" style="background:#e2e8f0;color:#475569;">Fair</span><span class="verdict-tip" id="verdict-tip-individual-NVDA" role="tooltip">In line with its own past year and its peers. Price at 85% of its own 52-week range (7.1% below its high), near its high; 26-week return 22.0%, mid-pack; PEG 0.9, too few peers with a PEG to rank it; strong quality: top third of peers (ROE 95%, net margin 55%, revenue growth +60%, EPS growth +80%, debt/equity 0.1).</span></span></td>
+                <td class="num invested-cell"><span class="muted">&mdash;</span> <button type="button" class="invested-edit" data-symbol="NVDA" title="Edit the amount invested in NVDA" aria-label="Edit invested amount for NVDA">&#9998;</button></td><td class="full-cell"><input type="checkbox" class="full-position" data-symbol="NVDA" aria-label="Full position in NVDA"></td><td><button type="button" class="remove-ticker" data-group="individual" data-symbol="NVDA" title="Remove NVDA from individual" aria-label="Remove NVDA">&times;</button></td>
+              </tr>
+              <tr data-symbol="AMD" data-pct-in-range="">
+                <td>AMD</td>
+                <td colspan="7" class="muted">Unable to load data.</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="num invested-cell"><span class="muted">&mdash;</span> <button type="button" class="invested-edit" data-symbol="AMD" title="Edit the amount invested in AMD" aria-label="Edit invested amount for AMD">&#9998;</button></td><td class="full-cell"><input type="checkbox" class="full-position" data-symbol="AMD" aria-label="Full position in AMD"></td><td><button type="button" class="remove-ticker" data-group="individual" data-symbol="AMD" title="Remove AMD from individual" aria-label="Remove AMD">&times;</button></td>
+              </tr>
+              <tr data-symbol="INTC" data-pct-in-range="32.11">
+                <td>INTC<span class="verdict-wrap stale-wrap" tabindex="0" aria-describedby="stale-tip-individual-INTC"><span class="stale-flag"><span aria-hidden="true">&#9201;</span> Saved</span><span class="verdict-tip" id="stale-tip-individual-INTC" role="tooltip">The live update failed. These numbers (and the verdict) are from 21 Oct 2026, 14:35 UTC.</span></span></td>
+                <td class="num">$24.10</td>
+                <td class="num">+0.30 <span class="ma-delta up" style="color:#15803d;">&#9650;1.26%</span></td>
+                <td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $18.00 to $37.00, current price $24.10">
+                <defs>
+                  <linearGradient id="range-grad-INTC" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-INTC)"/>
+                <circle cx="28.9" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$18.00</span><span>$37.00</span>
+              </div>
+            </div></td>
+                <td class="num">32%</td>
+                
+                <td class="num">$105.00B</td>
+                <td class="num muted">n/a</td>
+                <td class="num muted">n/a</td>
+                <td class="verdict-cell"><span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-individual-INTC"><span class="verdict-pill" style="background:#e2e8f0;color:#475569;">Fair</span><span class="verdict-tip" id="verdict-tip-individual-INTC" role="tooltip">In line with its own past year and its peers. Price at 32% of its own 52-week range (34.9% below its high), near its low; 26-week return -8.0%, behind most of individual; PEG not available; weak quality: bottom third of peers (ROE -4%, net margin -3%, revenue growth -1%, EPS growth n/a, debt/equity 0.5).</span></span></td>
+                <td class="num invested-cell"><span class="muted">&mdash;</span> <button type="button" class="invested-edit" data-symbol="INTC" title="Edit the amount invested in INTC" aria-label="Edit invested amount for INTC">&#9998;</button></td><td class="full-cell"><input type="checkbox" class="full-position" data-symbol="INTC" aria-label="Full position in INTC"></td><td><button type="button" class="remove-ticker" data-group="individual" data-symbol="INTC" title="Remove INTC from individual" aria-label="Remove INTC">&times;</button></td>
+              </tr>
+              <tr data-symbol="DOCS" data-pct-in-range="30.30">
+                <td>DOCS</td>
+                <td class="num">$33.58</td>
+                <td class="num">+0.23 <span class="ma-delta up" style="color:#15803d;">&#9650;0.69%</span></td>
+                <td class="range-bar-cell">
+            <div class="range-cell">
+              <svg class="range-bar" width="90" height="10" viewBox="0 0 90 10" role="img"
+                   aria-label="52-week range $17.15 to $71.37, current price $33.58">
+                <defs>
+                  <linearGradient id="range-grad-DOCS" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#15803d"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#b91c1c"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="2.0" width="90" height="6" rx="3" fill="url(#range-grad-DOCS)"/>
+                <circle cx="27.3" cy="5.0" r="3.5" fill="#fff" stroke="#0f172a" stroke-width="1.3"/>
+              </svg>
+              <div class="range-labels muted">
+                <span>$17.15</span><span>$71.37</span>
+              </div>
+            </div></td>
+                <td class="num">30%</td>
+                
+                <td class="num">$5.94B</td>
+                <td class="num">35.6</td>
+                <td class="num muted">n/a</td>
+                <td class="verdict-cell"><span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-individual-DOCS"><span class="verdict-pill" style="background:#e2e8f0;color:#475569;">Fair</span><span class="verdict-tip" id="verdict-tip-individual-DOCS" role="tooltip">In line with its own past year and its peers. Price at 30% of its own 52-week range (52.9% below its high), near its low; 26-week return 37.5%, ahead of most of individual (stretched); PEG not available (earnings are shrinking); quality mid-pack (ROE 17%, net margin 26%, revenue growth +11%, EPS growth -28%, debt/equity 0.0).</span></span></td>
+                <td class="num invested-cell"><span class="muted">&mdash;</span> <button type="button" class="invested-edit" data-symbol="DOCS" title="Edit the amount invested in DOCS" aria-label="Edit invested amount for DOCS">&#9998;</button></td><td class="full-cell"><input type="checkbox" class="full-position" data-symbol="DOCS" aria-label="Full position in DOCS"></td><td><button type="button" class="remove-ticker" data-group="individual" data-symbol="DOCS" title="Remove DOCS from individual" aria-label="Remove DOCS">&times;</button></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <form class="add-ticker-form" data-group="individual">
+            <input type="text" name="symbol" class="add-ticker-input" placeholder="Add ticker&hellip;" maxlength="10" autocomplete="off">
+            <button type="submit">Add</button>
+          </form>
+        </div></div>
+    <footer class="page-footer">
+      <p class="muted">Price, change, and 52-week range from Finnhub &middot; free tier may lag by up to ~20 minutes</p>
+      <p class="muted">Verdicts compare each ticker with its own 52-week range and its group; they are not an estimate of what a ticker is worth, and not personalized financial advice.</p>
+    </footer>
+  </main>
+</body>
+</html>

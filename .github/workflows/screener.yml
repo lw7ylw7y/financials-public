@@ -1,0 +1,39 @@
+name: Screener Refresh
+
+on:
+  schedule:
+    - cron: '30 5 * * *'
+  workflow_dispatch: {}
+
+# One run at a time: the job writes per-symbol state a second run would race on.
+concurrency:
+  group: screener-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Classify new symbols, refresh known ones, build candidates
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          SEC_CONTACT: ${{ secrets.SEC_CONTACT }}
+          SCREENER_NIGHTLY_CALL_CAP: ${{ vars.SCREENER_NIGHTLY_CALL_CAP }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+        run: python3 src/screener/job.py

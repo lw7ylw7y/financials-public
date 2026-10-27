@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ticker Dashboard</title>
+  <link rel="stylesheet" href="../../src/web/static/dashboard.css">
+</head>
+<body><div style="background:#fef3c7;color:#78350f;padding:6px 12px;font:12px sans-serif">UX mockup: rendered from the real page template with fixture data. Not live data.</div>
+  <main class="page page-wide">
+    <nav class="site-nav"><a href="/" class="">Indicator Digest</a><a href="/tickers" class="active">Ticker Dashboard</a><a href="/screener" class="">Small &amp; Mid-Cap Screener</a></nav>
+    <header class="page-header">
+      <h1>Ticker Dashboard</h1>
+      <div class="header-meta">
+        <span class="checking-indicator muted" id="checking-indicator">Checking for updates&hellip;</span>
+      </div>
+    </header>
+    <div id="market-news">
+        <section class="card">
+          <p class="muted">Loading market news&hellip;</p>
+        </section></div>
+    <p id="full-position-note" class="muted" role="status"></p>
+    <p id="full-position-error" class="muted" role="status"></p>
+    <p id="invested-note" class="muted" role="status"></p>
+    <p id="invested-error" class="muted" role="status"></p>
+    <div id="ticker-groups">
+        <div class="category-block" data-group="stocks">
+          <p class="category-label">Stocks <span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-stocks-"><span class="verdict-pill" style="background:#e2e8f0;color:#64748b;">Not judged</span><span class="verdict-tip" id="verdict-tip-stocks-" role="tooltip">Too few tickers with a 52-week range to compare: a group needs at least 3.</span></span></p>
+          <table class="indicator-table ticker-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-sort-key="symbol">Ticker</th>
+                <th class="num">Price</th>
+                <th class="num">Change</th>
+                <th>52-Week Range</th>
+                <th class="num sortable" data-sort-key="pctInRange">% in Range</th>
+                
+                <th>Verdict</th>
+                
+                <th>Full Position</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr data-symbol="SPY" data-pct-in-range="">
+                <td>SPY</td>
+                <td colspan="4" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="SPY" aria-label="Full position in SPY"></td><td><button type="button" class="remove-ticker" data-group="stocks" data-symbol="SPY" title="Remove SPY from stocks" aria-label="Remove SPY">&times;</button></td>
+              </tr>
+              <tr data-symbol="IVW" data-pct-in-range="">
+                <td>IVW</td>
+                <td colspan="4" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="IVW" aria-label="Full position in IVW"></td><td><button type="button" class="remove-ticker" data-group="stocks" data-symbol="IVW" title="Remove IVW from stocks" aria-label="Remove IVW">&times;</button></td>
+              </tr>
+              <tr data-symbol="QQQ" data-pct-in-range="">
+                <td>QQQ</td>
+                <td colspan="4" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="QQQ" aria-label="Full position in QQQ"></td><td><button type="button" class="remove-ticker" data-group="stocks" data-symbol="QQQ" title="Remove QQQ from stocks" aria-label="Remove QQQ">&times;</button></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <form class="add-ticker-form" data-group="stocks">
+            <input type="text" name="symbol" class="add-ticker-input" placeholder="Add ticker&hellip;" maxlength="10" autocomplete="off">
+            <button type="submit">Add</button>
+          </form>
+        </div>
+        <div class="category-block" data-group="bonds">
+          <p class="category-label">Bonds <span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-bonds-"><span class="verdict-pill" style="background:#e2e8f0;color:#64748b;">Not judged</span><span class="verdict-tip" id="verdict-tip-bonds-" role="tooltip">Too few tickers with a 52-week range to compare: a group needs at least 3.</span></span></p>
+          <table class="indicator-table ticker-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-sort-key="symbol">Ticker</th>
+                <th class="num">Price</th>
+                <th class="num">Change</th>
+                <th>52-Week Range</th>
+                <th class="num sortable" data-sort-key="pctInRange">% in Range</th>
+                
+                <th>Verdict</th>
+                
+                <th>Full Position</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr data-symbol="VGIT" data-pct-in-range="">
+                <td>VGIT</td>
+                <td colspan="4" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="VGIT" aria-label="Full position in VGIT"></td><td><button type="button" class="remove-ticker" data-group="bonds" data-symbol="VGIT" title="Remove VGIT from bonds" aria-label="Remove VGIT">&times;</button></td>
+              </tr>
+              <tr data-symbol="BND" data-pct-in-range="">
+                <td>BND</td>
+                <td colspan="4" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="BND" aria-label="Full position in BND"></td><td><button type="button" class="remove-ticker" data-group="bonds" data-symbol="BND" title="Remove BND from bonds" aria-label="Remove BND">&times;</button></td>
+              </tr>
+              <tr data-symbol="AGG" data-pct-in-range="">
+                <td>AGG</td>
+                <td colspan="4" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="full-cell"><input type="checkbox" class="full-position" data-symbol="AGG" aria-label="Full position in AGG"></td><td><button type="button" class="remove-ticker" data-group="bonds" data-symbol="AGG" title="Remove AGG from bonds" aria-label="Remove AGG">&times;</button></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <form class="add-ticker-form" data-group="bonds">
+            <input type="text" name="symbol" class="add-ticker-input" placeholder="Add ticker&hellip;" maxlength="10" autocomplete="off">
+            <button type="submit">Add</button>
+          </form>
+        </div>
+        <div class="category-block" data-group="individual">
+          <p class="category-label">Individual <span class="verdict-wrap" tabindex="0" aria-describedby="verdict-tip-individual-"><span class="verdict-pill" style="background:#e2e8f0;color:#64748b;">Not judged</span><span class="verdict-tip" id="verdict-tip-individual-" role="tooltip">Too few tickers with a 52-week range to compare: a group needs at least 3.</span></span></p>
+          <table class="indicator-table ticker-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-sort-key="symbol">Ticker</th>
+                <th class="num">Price</th>
+                <th class="num">Change</th>
+                <th>52-Week Range</th>
+                <th class="num sortable" data-sort-key="pctInRange">% in Range</th>
+                
+                <th class="num">Market Cap</th>
+                <th class="num">P/E</th>
+                <th class="num">PEG</th>
+                <th>Verdict</th>
+                <th class="num invested-head">Invested</th>
+                <th>Full Position</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr data-symbol="NVDA" data-pct-in-range="">
+                <td>NVDA</td>
+                <td colspan="7" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="num invested-cell"><span class="muted">&mdash;</span> <button type="button" class="invested-edit" data-symbol="NVDA" title="Edit the amount invested in NVDA" aria-label="Edit invested amount for NVDA">&#9998;</button></td><td class="full-cell"><input type="checkbox" class="full-position" data-symbol="NVDA" aria-label="Full position in NVDA"></td><td><button type="button" class="remove-ticker" data-group="individual" data-symbol="NVDA" title="Remove NVDA from individual" aria-label="Remove NVDA">&times;</button></td>
+              </tr>
+              <tr data-symbol="AMD" data-pct-in-range="">
+                <td>AMD</td>
+                <td colspan="7" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="num invested-cell"><span class="muted">&mdash;</span> <button type="button" class="invested-edit" data-symbol="AMD" title="Edit the amount invested in AMD" aria-label="Edit invested amount for AMD">&#9998;</button></td><td class="full-cell"><input type="checkbox" class="full-position" data-symbol="AMD" aria-label="Full position in AMD"></td><td><button type="button" class="remove-ticker" data-group="individual" data-symbol="AMD" title="Remove AMD from individual" aria-label="Remove AMD">&times;</button></td>
+              </tr>
+              <tr data-symbol="INTC" data-pct-in-range="">
+                <td>INTC</td>
+                <td colspan="7" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="num invested-cell"><span class="muted">&mdash;</span> <button type="button" class="invested-edit" data-symbol="INTC" title="Edit the amount invested in INTC" aria-label="Edit invested amount for INTC">&#9998;</button></td><td class="full-cell"><input type="checkbox" class="full-position" data-symbol="INTC" aria-label="Full position in INTC"></td><td><button type="button" class="remove-ticker" data-group="individual" data-symbol="INTC" title="Remove INTC from individual" aria-label="Remove INTC">&times;</button></td>
+              </tr>
+              <tr data-symbol="DOCS" data-pct-in-range="">
+                <td>DOCS</td>
+                <td colspan="7" class="muted">Loading&hellip;</td>
+                <td class="verdict-cell muted">&mdash;</td>
+                <td class="num invested-cell"><span class="muted">&mdash;</span> <button type="button" class="invested-edit" data-symbol="DOCS" title="Edit the amount invested in DOCS" aria-label="Edit invested amount for DOCS">&#9998;</button></td><td class="full-cell"><input type="checkbox" class="full-position" data-symbol="DOCS" aria-label="Full position in DOCS"></td><td><button type="button" class="remove-ticker" data-group="individual" data-symbol="DOCS" title="Remove DOCS from individual" aria-label="Remove DOCS">&times;</button></td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <form class="add-ticker-form" data-group="individual">
+            <input type="text" name="symbol" class="add-ticker-input" placeholder="Add ticker&hellip;" maxlength="10" autocomplete="off">
+            <button type="submit">Add</button>
+          </form>
+        </div></div>
+    <footer class="page-footer">
+      <p class="muted">Price, change, and 52-week range from Finnhub &middot; free tier may lag by up to ~20 minutes</p>
+      <p class="muted">Verdicts compare each ticker with its own 52-week range and its group; they are not an estimate of what a ticker is worth, and not personalized financial advice.</p>
+    </footer>
+  </main>
+</body>
+</html>

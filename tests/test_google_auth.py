@@ -18,7 +18,6 @@ from google_auth import (
     allowed_email,
     build_authorize_url,
     fetch_verified_email,
-    is_enabled,
     missing_config,
 )
 
@@ -27,12 +26,14 @@ ENV = {"GOOGLE_CLIENT_ID": "cid", "GOOGLE_CLIENT_SECRET": "csecret", "ALLOWED_EM
 
 class TestConfig(unittest.TestCase):
     @patch.dict(os.environ, {}, clear=True)
-    def test_disabled_without_client_id(self):
-        self.assertFalse(is_enabled())
+    def test_everything_is_missing_without_any_setting(self):
+        self.assertEqual(
+            missing_config(),
+            ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "ALLOWED_EMAIL", "SECRET_KEY"],
+        )
 
     @patch.dict(os.environ, {"GOOGLE_CLIENT_ID": "cid"}, clear=True)
-    def test_enabled_by_client_id_alone_and_reports_what_is_missing(self):
-        self.assertTrue(is_enabled())
+    def test_reports_what_is_missing_beside_the_client_id(self):
         self.assertEqual(missing_config(), ["GOOGLE_CLIENT_SECRET", "ALLOWED_EMAIL", "SECRET_KEY"])
 
     @patch.dict(os.environ, ENV, clear=True)

@@ -15,12 +15,12 @@ A single-user tool for watching the economy and a stock watchlist: a scheduled e
 
 ```text
 pip install -r requirements.txt
-# create .env with the variables from Configuration (quote values containing | or spaces)
+# create .env with the variables from Configuration, the sign-in ones included (quote values containing | or spaces)
 set -a && source .env && set +a
 python3 src/web/app.py         # then open http://127.0.0.1:5000/
 ```
 
-The web app binds to the loopback address only. If port 5000 is still held by an earlier run, stop that process before starting a new one.
+The web app binds to the loopback address only. To sign in locally, add `http://127.0.0.1:5000/auth/callback` as an authorized redirect URI on the Google OAuth client. If port 5000 is still held by an earlier run, stop that process before starting a new one.
 
 **Run the tests** (offline, no environment variables needed):
 
@@ -40,7 +40,7 @@ Names only; keep values in `.env` locally, in the hosting dashboard, and in GitH
 | `GEMINI_FALLBACK_MODELS` | optional comma-separated fallback models | local, hosting | built-in defaults |
 | `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD`, `RECIPIENT_EMAIL` | sending the digest | local, Actions | no email is sent |
 | `FINNHUB_API_KEY` | Ticker Dashboard, screener job | local, hosting, Actions | tickers fall back to cached data or an error row; the job fails |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `ALLOWED_EMAIL`, `SECRET_KEY` | Google sign-in on a hosted deployment | hosting | with `GOOGLE_CLIENT_ID` unset, sign-in is off; set it and omit another and every route returns 503 |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `ALLOWED_EMAIL`, `SECRET_KEY` | Google sign-in; required to run the web app, locally too | hosting | with any of them unset, every route returns 503 |
 | `SEC_CONTACT` | screener job (your name and email, sent to the SEC as the User-Agent) | local, Actions | the job refuses to run |
 | `SCREENER_NIGHTLY_CALL_CAP` | optional cap on Finnhub calls per screener run | local, Actions (repository variable) | 1500 |
 

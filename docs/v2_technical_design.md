@@ -2,7 +2,7 @@
 
 **Companion to:** investment_dashboard_requirements.md, v2_user_stories.md, v1_technical_design.md
 **Adds to the v1 stack:** Flask (local web server) · Finnhub API (ticker price/52-week range)
-**Hosting:** local-only — `localhost`, bound to loopback only, started on demand
+**Hosting:** a Render web service behind Google sign-in (Section 11.2); the dev server binds to loopback only
 
 **Product shape:** v2 adds two web pages served by one local Flask app: the **Indicator Digest Page** (a browsable, live-refreshing version of the v1 digest email) and the **Ticker Dashboard** (new content). Both reuse v1's existing modules rather than duplicating logic — see Section 3.
 
@@ -196,7 +196,7 @@ Both `render_indicator_digest_page` and `render_ticker_dashboard_page` (`page_te
 ## 6. Local Hosting & Access
 
 - `app.py` binds explicitly to `127.0.0.1` (loopback only) — never `0.0.0.0`.
-- No authentication layer: unnecessary when the app is never reachable outside the machine itself.
+- This section is the original local-only design. The hosted deployment sits behind Google sign-in (Section 11.2); the dev server still binds to loopback.
 - Started manually when you want to check it (`./run_web.sh` or `flask --app src/web/app run`), not run continuously as a background service.
 - `FINNHUB_API_KEY` is read via `os.environ.get`, same convention as every other secret in this codebase.
 
@@ -237,6 +237,7 @@ All v1 secrets (`FRED_API_KEY`, `GEMINI_API_KEY`, etc.) are reused as-is by the 
 graph TD
     subgraph "Render free web service (public, HTTPS, Google sign-in-gated)"
         REQ[Any request] --> AUTH{Google sign-in<br/>GOOGLE_CLIENT_ID / ALLOWED_EMAIL}
+        AUTH -->|setting missing| R503[503 on every route]
         AUTH -->|fail| R401[redirect to /login, or 401 for /api/*]
         AUTH -->|pass| ROUTES[Existing routes: / /tickers<br/>/api/check /api/tickers/groups/&lt;name&gt;/check<br/>/api/market-news/check ...]
         ROUTES --> KV[kv_store.py -> Upstash Redis REST API<br/>indicator state + ticker config + ticker cache + news cache]
@@ -247,11 +248,11 @@ graph TD
 Nothing about the existing route logic changes — `app.py`, `live_pull.py`, `main.py`, and `ticker_dashboard.py`'s business logic are the same whether run locally or hosted. Only two things are added in front of/underneath them: an auth gate, and a storage backend swap for every JSON blob that has no other durable home — as of Story 11 (Section 11.7), that now includes indicator state alongside the two ticker-related blobs.
 
 ### 11.2 Auth gate — implemented (Google sign-in)
-- `app.py`'s `_require_auth` `before_request` hook requires a signed session on every route once `GOOGLE_CLIENT_ID` is set. The session is Flask's signed cookie (`SECRET_KEY`; `HttpOnly`, `SameSite=Lax`, `Secure` when auth is on, 30-day lifetime), so it's stateless and works across gunicorn threads with no server-side session store.
+- `app.py`'s `_require_auth` `before_request` hook requires a signed session on every route. The session is Flask's signed cookie (`SECRET_KEY`; `HttpOnly`, `SameSite=Lax`, `Secure`, 30-day lifetime), so it's stateless and works across gunicorn threads with no server-side session store.
 - Flow (`google_auth.py`, plain `requests`, no OAuth library): `/login` stores a random `state` in the session and redirects to Google's consent URL (`openid email`, `prompt=select_account`). `/auth/callback` pops the stored `state` (single-use) and compares it with `secrets.compare_digest`, exchanges the `code` at Google's token endpoint, then reads the email from the userinfo endpoint with the returned access token. Because that call is server-to-server over TLS, the ID token's signature never needs to be verified locally. The email must have `email_verified: true` and equal `ALLOWED_EMAIL` (case-insensitive); otherwise 403 with no session set.
 - Unauthenticated `/api/*` requests get a 401 JSON error, since the page's `fetch()` calls can't usefully follow a redirect to Google; page requests get a 302 to `/login`. `/logout` clears the session.
 - `ProxyFix(x_proto=1, x_host=1)` makes `url_for(..., _external=True)` produce an `https://` redirect URI behind Render's TLS-terminating proxy; it has to match the URI registered in the Google console exactly (`https://<host>/auth/callback`).
-- Off when `GOOGLE_CLIENT_ID` is unset (local dev). Once set, a missing `GOOGLE_CLIENT_SECRET`/`ALLOWED_EMAIL`/`SECRET_KEY` returns a 503 naming the missing setting on every route instead of leaving the dashboard open — deliberately stricter than the earlier Basic Auth gate, which treated a partially-configured state as auth-off.
+- Never off: with `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `ALLOWED_EMAIL` or `SECRET_KEY` unset, every route (the static files and `/login` included) returns a 503 naming the missing setting, so a dropped or misspelled variable on the host can't leave the dashboard open. Local development signs in too, through the `http://127.0.0.1:5000/auth/callback` redirect URI. This is stricter than the earlier Basic Auth gate and than the first version of this gate, which was a no-op without `GOOGLE_CLIENT_ID`.
 - The Google OAuth client is created in the Google Auth Platform console (consent screen "External", left in Testing with the owner's account as a test user, which needs no Google verification for `openid email`). First sign-in shows Google's "unverified app" warning once. To test sign-in locally, add `http://127.0.0.1:5000/auth/callback` as a second authorized redirect URI. `SECRET_KEY` can be generated with `python3 -c "import secrets; print(secrets.token_hex(32))"`.
 - Replaces the original HTTP Basic Auth gate (`DASHBOARD_USERNAME`/`DASHBOARD_PASSWORD`, hand-rolled with `secrets.compare_digest`), which is removed.
 - Covered by `tests/test_app.py` (`TestDashboardAuth`) and `tests/test_google_auth.py`, with Google's endpoints mocked; the flow has not been exercised against a real Google OAuth client yet.

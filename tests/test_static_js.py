@@ -39,6 +39,8 @@ class TestPageScriptFiles(unittest.TestCase):
 
     def test_every_script_a_page_references_is_served_with_a_version_and_a_javascript_type(self):
         client = app_module.app.test_client()
+        with client.session_transaction() as sess:
+            sess["email"] = "me@example.com"
         cards = {"stocks": []}
         pages = [
             page_template.render_ticker_dashboard_page(cards, {"headlines": [], "pending": False}),
@@ -56,7 +58,9 @@ class TestPageScriptFiles(unittest.TestCase):
             found = re.findall(r'src="(/static/js/([a-z_]+\.js)\?v=\d+)"', html)
             self.assertEqual([name for _, name in found], expected)
             referenced.update(url for url, _ in found)
-        with mock.patch.dict(os.environ, {"GOOGLE_CLIENT_ID": ""}):
+        with mock.patch.dict(os.environ, {
+            "GOOGLE_CLIENT_ID": "client-id", "GOOGLE_CLIENT_SECRET": "client-secret",
+            "ALLOWED_EMAIL": "me@example.com", "SECRET_KEY": "test-secret-key"}):
             for url in sorted(referenced):
                 with self.subTest(url=url):
                     with client.get(url) as response:

@@ -30,17 +30,13 @@ def client_id() -> str | None:
     return os.environ.get("GOOGLE_CLIENT_ID") or None
 
 
-def is_enabled() -> bool:
-    """Sign-in is required as soon as a client ID is set, even if the rest
-    of the configuration is missing (see `missing_config`), so a typo'd
-    env var name locks the dashboard rather than opening it."""
-    return client_id() is not None
-
-
 def missing_config() -> list[str]:
+    """The sign-in settings that are not set. Any of them missing locks
+    every route, so a typo'd or dropped env var name never opens the
+    dashboard."""
     return [
         name
-        for name in ("GOOGLE_CLIENT_SECRET", "ALLOWED_EMAIL", "SECRET_KEY")
+        for name in ("GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "ALLOWED_EMAIL", "SECRET_KEY")
         if not os.environ.get(name)
     ]
 

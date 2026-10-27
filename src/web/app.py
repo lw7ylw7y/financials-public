@@ -5,14 +5,12 @@ editor, "/api/tickers/add" and "/api/tickers/remove"). The ticker
 page's background live check hits one route per group
 ("/api/tickers/groups/<name>/check") plus one for market news
 ("/api/market-news/check") rather than a single combined route,
-so a group with fewer tickers repaints before a slower one finishes. Bound
-to loopback only (127.0.0.1), never 0.0.0.0, so it is unreachable from
-anything but the machine it's running on, per the local-only hosting
-decision in Section 4.1 of investment_dashboard_requirements.md.
+so a group with fewer tickers repaints before a slower one finishes. The
+local dev server binds to loopback only (127.0.0.1); the hosted
+deployment runs under gunicorn.
 
-`_require_auth` gates every route behind Google sign-in when
-`GOOGLE_CLIENT_ID` is set (the hosted deployment) -- it's a no-op when
-unset, which is local development's default.
+`_require_auth` gates every route behind Google sign-in, and answers 503
+on every route while any sign-in setting is missing.
 """
 
 import logging
@@ -82,7 +80,7 @@ app.config.update(
     SECRET_KEY=os.environ.get("SECRET_KEY") or secrets.token_hex(32),
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=google_auth.is_enabled(),
+    SESSION_COOKIE_SECURE=True,
     PERMANENT_SESSION_LIFETIME=timedelta(days=30),
 )
 
@@ -95,17 +93,13 @@ def _page(message: str, status: int) -> Response:
 
 @app.before_request
 def _require_auth():
-    """Google sign-in in front of every route. Turned on by setting
-    `GOOGLE_CLIENT_ID` (the hosted deployment); otherwise a no-op, which
-    is local development's default. Once on, a missing companion setting
-    fails closed with a 503 instead of leaving the dashboard open. Only
-    the session's own signed email counts, and it must match
-    `ALLOWED_EMAIL`; an unauthenticated `/api/*` call gets a 401 rather
-    than a redirect its fetch() couldn't follow usefully.
+    """Google sign-in in front of every route. A missing sign-in setting,
+    `GOOGLE_CLIENT_ID` included, fails closed with a 503 instead of
+    leaving the dashboard open. Only the session's own signed email
+    counts, and it must match `ALLOWED_EMAIL`; an unauthenticated
+    `/api/*` call gets a 401 rather than a redirect its fetch() couldn't
+    follow usefully.
     """
-    if not google_auth.is_enabled():
-        return None
-
     missing = google_auth.missing_config()
     if missing:
         return _page(f"Sign-in is misconfigured; missing: {', '.join(missing)}", 503)
@@ -124,8 +118,6 @@ def _require_auth():
 
 @app.route("/login")
 def login():
-    if not google_auth.is_enabled():
-        return redirect(url_for("indicator_digest_page"))
     state = secrets.token_urlsafe(32)
     session["oauth_state"] = state
     redirect_uri = url_for("auth_callback", _external=True)

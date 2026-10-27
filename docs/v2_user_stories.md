@@ -187,17 +187,17 @@ v2 is two web pages: a read-only Indicator Digest Page (mirrors the v1 email) an
 - [x] Every route requires signing in with Google before rendering any content; there is no page reachable without authenticating. A logged-out page visit redirects to Google's sign-in; a logged-out `/api/*` call gets a 401
 - [x] Only the one Google account named by `ALLOWED_EMAIL` (with a verified email) is let in; any other Google account gets a 403
 - [x] Credentials (`GOOGLE_CLIENT_ID`/`SECRET`, `ALLOWED_EMAIL`, `SECRET_KEY`) are configured via environment variables on the host, never hardcoded or committed to the repo
-- [x] The sign-in flow guards against forged callbacks (a per-request `state` value, single-use) and, once enabled, fails closed (503) if any required setting is missing
+- [x] The sign-in flow guards against forged callbacks (a per-request `state` value, single-use) and fails closed (503) on every route if any required setting, `GOOGLE_CLIENT_ID` included, is missing
 - [x] Traffic is served over HTTPS (provided by the host)
-- [x] Local development is unaffected — running `src/web/app.py` locally with `GOOGLE_CLIENT_ID` unset behaves exactly as it does today, with no sign-in
+- [x] Local development signs in the same way: the four settings go in `.env`, and `http://127.0.0.1:5000/auth/callback` is a registered redirect URI; with any of them unset, every route returns 503
 
 **Tasks**
 - [x] H.1 `gunicorn` in `requirements.txt`; no entry-point shim needed (`gunicorn --chdir src/web app:app`, Section 11.5)
-- [x] H.2 `app.py` auth `before_request` hook gated on `GOOGLE_CLIENT_ID` (`google_auth.py`, `/login`, `/auth/callback`, `/logout`; replaced an earlier HTTP Basic Auth gate)
+- [x] H.2 `app.py` auth `before_request` hook on every route (`google_auth.py`, `/login`, `/auth/callback`, `/logout`; replaced an earlier HTTP Basic Auth gate)
 - [x] H.6 Render service created, GitHub repo connected, auto-deploy on push to `main`, env vars set, auth confirmed over HTTPS (env var edits need an explicit "Save and Redeploy", Section 11.5)
 - [x] Verified live: hosted `/` and `/tickers` require sign-in before rendering anything; wrong credentials are rejected
 
-**Tests:** `tests/test_app.py` and `tests/test_google_auth.py` cover the redirect and 401, the forged, missing or replayed `state`, a missing code, an unverified or wrong email, a partial configuration (503) and unauthenticated access with `GOOGLE_CLIENT_ID` unset.
+**Tests:** `tests/test_app.py` and `tests/test_google_auth.py` cover the redirect and 401, the forged, missing or replayed `state`, a missing code, an unverified or wrong email, a partial configuration (503) and a missing `GOOGLE_CLIENT_ID` (503 on every route).
 
 ---
 
@@ -1157,6 +1157,6 @@ Our real rate runs about 0.4 points below the reference on average (it uses real
 
 ---
 ## Cross-Cutting Non-Functional Criteria (apply to all stories above)
-- [x] Every page and API route requires Google sign-in when `GOOGLE_CLIENT_ID` is set (Story 8); with it unset, as in local development, none does
+- [x] Every page and API route requires Google sign-in (Story 8); with `GOOGLE_CLIENT_ID` or another sign-in setting unset, every route returns 503
 - [x] Both pages are usable on a desktop/web browser (no mobile app)
 - [x] A data-source outage (FRED, Finnhub) or missing data degrades gracefully (visible error/empty state) rather than crashing the page

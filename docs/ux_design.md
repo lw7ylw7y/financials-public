@@ -11,7 +11,7 @@ Modes used: **screen map + style guide + screen spec**, written against UI that 
 
 It does **not** cover: new features, the email's HTML layout (`email_template.py`), or any code change. Nothing in `src/` was edited for this document.
 
-Settled decisions this document does not reopen (from the requirements and `CLAUDE.md`):
+Settled decisions this document does not reopen (from the requirements and the project's working notes):
 - One table per group, not per-ticker cards; no per-ticker news column.
 - No persistent Live/Saved freshness badge or timestamp on the Indicator Digest Page.
 - No top-discount row highlight on the ticker tables.
@@ -377,7 +377,7 @@ Severity per the review rubric. **Basis:** read from the templates and CSS and c
 
 ## 10. Open questions for the investor
 
-- **Q1 — Staleness (decided).** No page-wide freshness badge (an earlier decision, recorded in `CLAUDE.md`). A row whose refresh failed carries a "Saved" flag with the saved date and time on hover (Story 36); a row that refreshed shows nothing.
+- **Q1 — Staleness (decided).** No page-wide freshness badge (an earlier decision). A row whose refresh failed carries a "Saved" flag with the saved date and time on hover (Story 36); a row that refreshed shows nothing.
 - **Q2 — Dead ends.** The two empty states (no indicator history, no groups) tell the person nothing. Is the one-line explanation in Section 9 the right amount, or should recovery instructions stay out of the UI?
 - **Q3 — Dialogs.** Are you content with native `confirm`/`alert`, given they block and cannot be styled?
 - **Q4 — Sign-out and help.** Do you want a visible sign-out link and a short "what these verdicts mean" explanation on the Ticker Dashboard? Today `/logout` is unlinked and the method (rank in own 52-week range, quality rank) is only in the docs.
@@ -386,7 +386,7 @@ Severity per the review rubric. **Basis:** read from the templates and CSS and c
 
 ## 11. How to check it
 
-Run against the live local app (`python3 src/web/app.py`, sign-in unset) or the mockups in `docs/ux_mockups/`.
+Run against the live local app (`python3 src/web/app.py`, with the four sign-in settings in `.env` and `http://127.0.0.1:5000/auth/callback` registered) or the mockups in `docs/ux_mockups/`.
 
 1. **Instant render.** Load `/` and `/tickers` with the network throttled; confirm content appears before "Checking for updates…" clears. *Expected:* cached numbers visible immediately; the indicator disappears when the check ends.
 2. **Failure keeps the old value.** Block `/api/tickers/groups/*` in dev tools and reload. *Expected:* rows keep their numbers; no error text where a value existed.

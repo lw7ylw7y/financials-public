@@ -20,7 +20,6 @@ import scoring
 import settings as screener_settings
 from kv_store import KvStoreError
 
-NO_AUTH_ENV = {"GOOGLE_CLIENT_ID": ""}
 AUTH_ENV = {
     "GOOGLE_CLIENT_ID": "client-id",
     "GOOGLE_CLIENT_SECRET": "client-secret",
@@ -29,10 +28,17 @@ AUTH_ENV = {
 }
 
 
+def signed_in_client():
+    client = app_module.app.test_client()
+    with client.session_transaction() as sess:
+        sess["email"] = "me@example.com"
+    return client
+
+
 class TestDashboardAuth(unittest.TestCase):
-    """Google sign-in gate in front of every route, on only when
-    GOOGLE_CLIENT_ID is set. Data/network calls are mocked out -- this
-    is testing the auth gate, not page content.
+    """Google sign-in gate in front of every route; every sign-in setting,
+    GOOGLE_CLIENT_ID included, has to be set. Data/network calls are mocked
+    out -- this is testing the auth gate, not page content.
     """
 
     def setUp(self):
@@ -50,11 +56,37 @@ class TestDashboardAuth(unittest.TestCase):
         with self.client.session_transaction() as sess:
             sess["email"] = email
 
-    def test_no_client_id_allows_request_without_signing_in(self):
-        with mock.patch.dict(os.environ, NO_AUTH_ENV):
-            response = self.client.get("/")
+    def test_no_client_id_blocks_every_route_even_for_a_signed_in_session(self):
+        self.sign_in()
+        with mock.patch.dict(os.environ, {**AUTH_ENV, "GOOGLE_CLIENT_ID": ""}):
+            for method, path in (
+                ("get", "/"),
+                ("get", "/tickers"),
+                ("get", "/login"),
+                ("get", "/static/dashboard.css"),
+                ("get", "/api/check"),
+                ("post", "/api/invested"),
+                ("post", "/api/tickers/add"),
+            ):
+                response = getattr(self.client, method)(path)
+                self.assertEqual(response.status_code, 503, path)
+                self.assertIn("GOOGLE_CLIENT_ID", response.get_data(as_text=True), path)
 
-        self.assertEqual(response.status_code, 200)
+    def test_each_missing_sign_in_setting_blocks_every_kind_of_request(self):
+        self.sign_in()
+        for name in AUTH_ENV:
+            with self.subTest(missing=name), mock.patch.dict(os.environ, {**AUTH_ENV, name: ""}):
+                for method, path in (
+                    ("get", "/"),
+                    ("get", "/auth/callback?code=x&state=y"),
+                    ("get", "/logout"),
+                    ("get", "/static/dashboard.css"),
+                    ("get", "/no-such-page"),
+                    ("head", "/"),
+                    ("options", "/api/check"),
+                ):
+                    response = getattr(self.client, method)(path)
+                    self.assertEqual(response.status_code, 503, f"{name} {method} {path}")
 
     def test_page_redirects_to_login_when_signed_out(self):
         with mock.patch.dict(os.environ, AUTH_ENV):
@@ -197,8 +229,8 @@ class TestApiCheckTickerGroup(unittest.TestCase):
     tickers repaints before a slower one finishes."""
 
     def setUp(self):
-        self.client = app_module.app.test_client()
-        self.env_patcher = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        self.env_patcher = mock.patch.dict(os.environ, AUTH_ENV)
         self.env_patcher.start()
         self.addCleanup(self.env_patcher.stop)
 
@@ -257,8 +289,8 @@ class TestApiCheckTickerGroup(unittest.TestCase):
 
 class TestReadsHistoryRoute(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        env = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        env = mock.patch.dict(os.environ, AUTH_ENV)
         env.start()
         self.addCleanup(env.stop)
 
@@ -306,8 +338,8 @@ class TestReadsHistoryRoute(unittest.TestCase):
 
 class TestApiCheckMarketNews(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        self.env_patcher = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        self.env_patcher = mock.patch.dict(os.environ, AUTH_ENV)
         self.env_patcher.start()
         self.addCleanup(self.env_patcher.stop)
 
@@ -324,8 +356,8 @@ CANDIDATE = {"name": "Acme", "week52_low": 8.0, "week52_high": 15.0, "market_cap
 
 class TestScreenerRoutes(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        env = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        env = mock.patch.dict(os.environ, AUTH_ENV)
         env.start()
         self.addCleanup(env.stop)
 
@@ -411,8 +443,8 @@ PASSING_CANDIDATE = {
 
 class TestScreenerTriageRoutes(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        env = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        env = mock.patch.dict(os.environ, AUTH_ENV)
         env.start()
         self.addCleanup(env.stop)
         self.candidates = {"AAA": CANDIDATE}
@@ -568,8 +600,8 @@ class TestScreenerTriageRoutes(unittest.TestCase):
 
 class TestScreenerSettingsRoutes(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        env = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        env = mock.patch.dict(os.environ, AUTH_ENV)
         env.start()
         self.addCleanup(env.stop)
         self.form = screener_settings.default_form()
@@ -666,8 +698,8 @@ class TestScreenerSettingsRoutes(unittest.TestCase):
 
 class TestScreenerPromoteRoute(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        env = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        env = mock.patch.dict(os.environ, AUTH_ENV)
         env.start()
         self.addCleanup(env.stop)
 
@@ -729,8 +761,8 @@ class TestScreenerPromoteRoute(unittest.TestCase):
 
 class TestRemovingATickerClearsItsInvestedAmount(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        env = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        env = mock.patch.dict(os.environ, AUTH_ENV)
         env.start()
         self.addCleanup(env.stop)
 
@@ -775,8 +807,8 @@ class TestRemovingATickerClearsItsInvestedAmount(unittest.TestCase):
 
 class TestInvestedRoute(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        env = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        env = mock.patch.dict(os.environ, AUTH_ENV)
         env.start()
         self.addCleanup(env.stop)
 
@@ -842,8 +874,8 @@ class TestInvestedRoute(unittest.TestCase):
 
 class TestFullPositionRoute(unittest.TestCase):
     def setUp(self):
-        self.client = app_module.app.test_client()
-        env = mock.patch.dict(os.environ, NO_AUTH_ENV)
+        self.client = signed_in_client()
+        env = mock.patch.dict(os.environ, AUTH_ENV)
         env.start()
         self.addCleanup(env.stop)
 
